@@ -17,7 +17,7 @@ namespace EES.V1.Repositories
         {
             _client = new RestClient("https://api.education.gov.uk/statistics/v1"); // Replace with actual base URL
             // Use application base directory so paths work on a server instead of a developer machine
-            _datasetFolder = Path.Combine(AppContext.BaseDirectory, "EES.V1", "DatasetDownload");
+            _datasetFolder = Path.Combine(AppContext.BaseDirectory, "data");
             Directory.CreateDirectory(_datasetFolder);
         }
         public async void GetMetadataDownload(Guid dataSetId)

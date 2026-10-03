@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\data\19e39901-a96c-be76-b9c2-6af54ae076d2-urns.json" />
+    <Content Remove="wwwroot\data\19e39901-a96c-be76-b9c2-6af54ae076d2.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="GeoUK" Version="1.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
   </ItemGroup>
@@ -16,7 +21,25 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\data\19e39901-a96c-be76-b9c2-6af54ae076d2-urns.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\data\19e39901-a96c-be76-b9c2-6af54ae076d2.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\EES.V1\EES.V1.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\data\offerdetails.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\data\schools.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
