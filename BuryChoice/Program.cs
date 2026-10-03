@@ -1,7 +1,12 @@
+using BuryChoice.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// JSON file reader for loading data files from content root or wwwroot
+builder.Services.AddSingleton<IJsonFileReader, JsonFileReader>();
 
 var app = builder.Build();
 

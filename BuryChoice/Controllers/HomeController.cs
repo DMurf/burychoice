@@ -10,6 +10,12 @@ namespace BuryChoice.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IJsonFileReader _jsonReader;
+
+        public HomeController(IJsonFileReader jsonFileReader)
+        {
+            _jsonReader = jsonFileReader;
+        }
         public async Task<IActionResult> Index(string urns)
         {
             urns = "105354,146529,148097";
@@ -18,8 +24,7 @@ namespace BuryChoice.Controllers
 
             var schools = new List<SchoolModel>();
 
-            var file = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "data", "schools.json");
-            schools = JsonConvert.DeserializeObject<List<SchoolModel>>(System.IO.File.ReadAllText(file));
+            schools = await _jsonReader.ReadJsonFileAsync<List<SchoolModel>>("data/schools.json", fromWebRoot: true) ?? new List<SchoolModel>();
 
             if (!string.IsNullOrWhiteSpace(urns))
             {
@@ -27,8 +32,7 @@ namespace BuryChoice.Controllers
             }
             
 
-            var fileoffer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "data", "offerdetails.json");
-            var offerDetails = JsonConvert.DeserializeObject<List<OfferDetails>>(System.IO.File.ReadAllText(fileoffer));
+            var offerDetails = await _jsonReader.ReadJsonFileAsync<List<OfferDetails>>("data/offerdetails.json", fromWebRoot: true) ?? new List<OfferDetails>();
 
             var model = new MainViewModel(schools);
             model.OfferDetails = OfferDetailsSummary.Map(offerDetails, schoolDict: schools.ToDictionary(s => s.URN, s => s.EstablishmentName));
