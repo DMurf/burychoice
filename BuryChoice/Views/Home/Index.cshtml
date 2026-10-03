@@ -1,0 +1,518 @@
+﻿@model BuryChoice.Models.MainViewModel
+
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<section class="container">
+    <div class="columns p-5">
+        <div class="column">
+            <div class="content">
+                <h2>What is this website?</h2>
+
+                Decisions are hard, especially when picking your child's high school. This website aims to try and help.
+                The following are questions to consider
+                <ul>
+                    <li>Is the school academically what I'd want?</li>
+                    <li>After high school, where to the children go?</li>
+                    <li>What are my chances of getting accepted at the school?</li>
+                    <li>How does the school feel? Vibes, layout, size, feel.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container">
+    <div class="columns p-5">
+        <div class="column">
+            <div class="content">
+                <h2>Academia</h2>
+
+                <p> The Department for Education (DfE) has a website dedicated to comparing school and college performance (CSCP) and will quite happily show comparison tables for the whole of Bury <a href="https://www.compare-school-performance.service.gov.uk/schools-by-type?step=default&table=schools&region=351&geographic=la&for=secondary" rel="nofollow">Compare school and college performance for Bury</a></p>
+
+                <p>The DfE has a number of measurements that schools can be held accountable against</p>
+                <ul>
+                    <li>Attainment 8 - Overall average score for 8 top subjects for the school include English, Maths, Science, History, Geography, Foreign languages (and others). <i>Effectively most of the subjects your child will take in year 10 averaged together.</i></li>
+                    <li>Grade 5 and Above in English and Maths - Scored from 1 - 9 in English Literature/Language and Maths. 5 is the equivalent of a C, or low B.</li>
+                    <li>Grade 4 and Above in English and Maths - Scored from 1 - 9 in English Literature/Language and Maths. 4 is a C</li>
+                    <li>Percentage staying in education, employment, or apprenticeship</li>
+                </ul>
+
+                <p>Each of the above can be divided up into areas, such as from Disadvantaged backgrounds, or English as an Additional Language (EAL), however these are not in scope here. They are covered on <a href="https://www.compare-school-performance.service.gov.uk/">CSCP</a> or available in <a href="https://explore-education-statistics.service.gov.uk/find-statistics/key-stage-4-performance/2024-25">Explore Education Statistics (EES)</a></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="container">
+    <div class="columns p-5">
+        <div class="column">
+            <div class="card">
+                <div class="card-image">
+                    <figure class="image is-16by9">
+                        <div id="map" style="height:100%;width:100%;"></div>
+                    </figure>
+                    <p class="p-3">CAVEAT: Addresses taken from Get Information About Schools (GIAS), in the form of Easting/Northing and translated into Longitude and Latitude. Bury Council use their own proprietory LLPG to hold addresses. The locations of the schools match the LLPG. </p>
+                </div>
+
+            </div>
+        </div>
+        <div class="column">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Admitted/ PAN  (2026)
+                        </th>
+                        <th>
+                            Admitted/ PAN (2025)
+                        </th>
+                        <th>
+                            Admitted/ PAN (2024)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.OfferDetails)
+                    {
+                        <tr>
+                            <th> @item.Name </th>
+                            <td> @item.Total26 / @item.PAN26 </td>
+                            <td> @item.Total25 / @item.PAN25 </td>
+                            <td> @item.Total24 / @item.PAN24 </td>
+                        </tr>
+                    }
+                    <tr>
+                        <th>Number of Year 6 students in Bury</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+
+                    </tr>
+                     <tr>
+                        <th>Number of Year 5 students in Bury</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Distance (2026)
+                        </th>
+                        <th>
+                            Distance (2025)
+                        </th>
+                        <th>
+                            Distance (2024)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.OfferDetails)
+                    {
+                        <tr>
+                            <th> @item.Name </th>
+                            <td> 
+                                @if (item.Distance26.HasValue)
+                                {
+                                    <text>@item.Distance26?.ToString("0.##") miles</text>
+                                }
+                                else
+                                {
+                                    <text>N/A</text>
+                                }
+                            </td>
+                            <td> 
+                                @if (item.Distance25.HasValue)
+                                {
+                                    <text>@item.Distance25?.ToString("0.##") miles</text>
+                                }
+                                else
+                                {
+                                    <text>N/A</text>
+                                }
+                            </td>
+                            <td> 
+                                @if (item.Distance24.HasValue)
+                                {
+                                    <text>@item.Distance24?.ToString("0.##") miles</text>
+                                }
+                                else
+                                {
+                                    <text>N/A</text>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<section class="container">
+    <div class="columns pt-3">
+        <div class="column">
+            <section class="section" id="table">
+                <h1 class="title"> Table </h1>
+                <hr>
+                <table class="table is-striped is-bordered">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th colspan="4">Attainment 8</th>
+                            <th colspan="4">Progress 8</th>
+                            <th colspan="4">Staying in Education /<br /> Employment/<br /> Apprenticeship</th>
+                        </tr>
+                        <tr>
+                            <th>
+                                School
+                            </th>
+                            <th>
+                                2026
+                            </th>
+                            <th>
+                                2025
+                            </th>
+                            <th>
+                                2024
+                            </th>
+                            <th>
+                                2023
+                            </th>
+                            <th>
+                                2026
+                            </th>
+                            <th>
+                                2025
+                            </th>
+                            <th>
+                                2024
+                            </th>
+                            <th>
+                                2023
+                            </th>
+                            <th>
+                                2026
+                            </th>
+                            <th>
+                                2025
+                            </th>
+                            <th>
+                                2024
+                            </th>
+                            <th>
+                                2023
+                            </th>
+                        </tr>
+                    </thead>
+                   
+                    <tbody>
+                        @foreach (var item in Model.Schools)
+                        {
+                            <tr>
+                                <th>@item.EstablishmentName</th>
+                                <td>@Html.DisplayFor(i => item.PerformanceTables.Attainment8Score_26)</td>
+                                <td>@Html.DisplayFor(i => item.PerformanceTables.Attainment8Score_25)</td>
+                                <td>@Html.DisplayFor(i => item.PerformanceTables.Attainment8Score_24)</td>
+                                <td>@Html.DisplayFor(i => item.PerformanceTables.Attainment8Score_23)</td>
+
+                                <td>@Html.DisplayFor(i => item.PerformanceTables.Progress8Score_26)</td>
+                                <td>@Html.DisplayFor(i => item.PerformanceTables.Progress8Score_25)</td>
+                                <td>@Html.DisplayFor(i => item.PerformanceTables.Progress8Score_24)</td>
+                                <td>@Html.DisplayFor(i => item.PerformanceTables.Progress8Score_23)</td>
+
+                                <td>@Html.DisplayFor(i => item.PerformanceTables.StayingAll_26)</td>
+                                <td>@Html.DisplayFor(i => item.PerformanceTables.StayingAll_25)</td>
+                                <td>@Html.DisplayFor(i => item.PerformanceTables.StayingAll_24)</td>
+                                <td>@Html.DisplayFor(i => item.PerformanceTables.StayingAll_23)</td>
+                            </tr>
+                        }
+                        <tr>
+                            <th>Bury</th>
+                            <td>@Html.DisplayFor(Model => Model.BuryPerformance.Attainment8Score_26)</td>
+                            <td>@Html.DisplayFor(Model => Model.BuryPerformance.Attainment8Score_25)</td>
+                            <td>@Html.DisplayFor(Model => Model.BuryPerformance.Attainment8Score_24)</td>
+                            <td>@Html.DisplayFor(Model => Model.BuryPerformance.Attainment8Score_23)</td>
+
+                            <td>@Html.DisplayFor(Model => Model.BuryPerformance.Progress8Score_26)</td>
+                            <td>@Html.DisplayFor(Model => Model.BuryPerformance.Progress8Score_25)</td>
+                            <td>@Html.DisplayFor(Model => Model.BuryPerformance.Progress8Score_24)</td>
+                            <td>@Html.DisplayFor(Model => Model.BuryPerformance.Progress8Score_23)</td>
+
+                            <td>@Html.DisplayFor(Model => Model.BuryPerformance.StayingAll_26)</td>
+                            <td>@Html.DisplayFor(Model => Model.BuryPerformance.StayingAll_25)</td>
+                            <td>@Html.DisplayFor(Model => Model.BuryPerformance.StayingAll_24)</td>
+                            <td>@Html.DisplayFor(Model => Model.BuryPerformance.StayingAll_23)</td>
+                        </tr>
+                        <tr>
+                            <th>England</th>
+                            <td>@Html.DisplayFor(Model => Model.EnglandPerformance.Attainment8Score_26)</td>
+                            <td>@Html.DisplayFor(Model => Model.EnglandPerformance.Attainment8Score_25)</td>
+                            <td>@Html.DisplayFor(Model => Model.EnglandPerformance.Attainment8Score_24)</td>
+                            <td>@Html.DisplayFor(Model => Model.EnglandPerformance.Attainment8Score_23)</td>
+
+                            <td>@Html.DisplayFor(Model => Model.EnglandPerformance.Progress8Score_26)</td>
+                            <td>@Html.DisplayFor(Model => Model.EnglandPerformance.Progress8Score_25)</td>
+                            <td>@Html.DisplayFor(Model => Model.EnglandPerformance.Progress8Score_24)</td>
+                            <td>@Html.DisplayFor(Model => Model.EnglandPerformance.Progress8Score_23)</td>
+
+                            <td>@Html.DisplayFor(Model => Model.EnglandPerformance.StayingAll_26)</td>
+                            <td>@Html.DisplayFor(Model => Model.EnglandPerformance.StayingAll_25)</td>
+                            <td>@Html.DisplayFor(Model => Model.EnglandPerformance.StayingAll_24)</td>
+                            <td>@Html.DisplayFor(Model => Model.EnglandPerformance.StayingAll_23)</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+                <table class="table is-striped is-bordered">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th colspan="4">Grade 7+ Eng/Maths</th>
+                            <th colspan="4">Grade 5+ Eng/Maths</th>
+                            <th colspan="4">Grade 4+ Eng/Maths</th>
+                        </tr>
+                        <tr>
+                            <th>
+                                School
+                            </th>
+                            <th>
+                                2026
+                            </th>
+                            <th>
+                                2025
+                            </th>
+                            <th>
+                                2024
+                            </th>
+                            <th>
+                                2023
+                            </th>
+                            <th>
+                                2026
+                            </th>
+                            <th>
+                                2025
+                            </th>
+                            <th>
+                                2024
+                            </th>
+                            <th>
+                                2023
+                            </th>
+                            <th>
+                                2026
+                            </th>
+                            <th>
+                                2025
+                            </th>
+                            <th>
+                                2024
+                            </th>
+                            <th>
+                                2023
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Schools)
+                        {
+                            <tr>
+                                <th>@Html.DisplayFor(i => item.EstablishmentName)</th>
+                                <td>@Html.DisplayFor(i => item.PerformanceTables.Grade7EnglishMaths_26)</td>
+                                <td>@Html.DisplayFor(i => item.PerformanceTables.Grade7EnglishMaths_25)</td>
+                                <td>@Html.DisplayFor(i => item.PerformanceTables.Grade7EnglishMaths_24)</td>
+                                <td>@Html.DisplayFor(i => item.PerformanceTables.Grade7EnglishMaths_23)</td>
+
+                                <td>@Html.DisplayFor(i => item.PerformanceTables.Grade5EnglishMaths_26)</td>
+                                <td>@Html.DisplayFor(i => item.PerformanceTables.Grade5EnglishMaths_25)</td>
+                                <td>@Html.DisplayFor(i => item.PerformanceTables.Grade5EnglishMaths_24)</td>
+                                <td>@Html.DisplayFor(i => item.PerformanceTables.Grade5EnglishMaths_23)</td>
+
+                                <td>@Html.DisplayFor(i => item.PerformanceTables.Grade4EnglishMaths_26)</td>
+                                <td>@Html.DisplayFor(i => item.PerformanceTables.Grade4EnglishMaths_25)</td>
+                                <td>@Html.DisplayFor(i => item.PerformanceTables.Grade4EnglishMaths_24)</td>
+                                <td>@Html.DisplayFor(i => item.PerformanceTables.Grade4EnglishMaths_23)</td>
+                            </tr>
+                        }
+
+                        <tr>
+                            <th>Bury</th>
+                            <td>@Html.DisplayFor(Model => Model.BuryPerformance.Grade7EnglishMaths_26)</td>
+                            <td>@Html.DisplayFor(Model => Model.BuryPerformance.Grade7EnglishMaths_25)</td>
+                            <td>@Html.DisplayFor(Model => Model.BuryPerformance.Grade7EnglishMaths_24)</td>
+                            <td>@Html.DisplayFor(Model => Model.BuryPerformance.Grade7EnglishMaths_23)</td>
+
+                            <td>@Html.DisplayFor(Model => Model.BuryPerformance.Grade5EnglishMaths_26)</td>
+                            <td>@Html.DisplayFor(Model => Model.BuryPerformance.Grade5EnglishMaths_25)</td>
+                            <td>@Html.DisplayFor(Model => Model.BuryPerformance.Grade5EnglishMaths_24)</td>
+                            <td>@Html.DisplayFor(Model => Model.BuryPerformance.Grade5EnglishMaths_23)</td>
+
+                            <td>@Html.DisplayFor(Model => Model.BuryPerformance.Grade4EnglishMaths_26)</td>
+                            <td>@Html.DisplayFor(Model => Model.BuryPerformance.Grade4EnglishMaths_25)</td>
+                            <td>@Html.DisplayFor(Model => Model.BuryPerformance.Grade4EnglishMaths_24)</td>
+                            <td>@Html.DisplayFor(Model => Model.BuryPerformance.Grade4EnglishMaths_23)</td>
+                        </tr>
+                        <tr>
+                            <th>England</th>
+                            <td>@Html.DisplayFor(Model => Model.EnglandPerformance.Grade7EnglishMaths_26)</td>
+                            <td>@Html.DisplayFor(Model => Model.EnglandPerformance.Grade7EnglishMaths_25)</td>
+                            <td>@Html.DisplayFor(Model => Model.EnglandPerformance.Grade7EnglishMaths_24)</td>
+                            <td>@Html.DisplayFor(Model => Model.EnglandPerformance.Grade7EnglishMaths_23)</td>
+
+                            <td>@Html.DisplayFor(Model => Model.EnglandPerformance.Grade5EnglishMaths_26)</td>
+                            <td>@Html.DisplayFor(Model => Model.EnglandPerformance.Grade5EnglishMaths_25)</td>
+                            <td>@Html.DisplayFor(Model => Model.EnglandPerformance.Grade5EnglishMaths_24)</td>
+                            <td>@Html.DisplayFor(Model => Model.EnglandPerformance.Grade5EnglishMaths_23)</td>
+
+                            <td>@Html.DisplayFor(Model => Model.EnglandPerformance.Grade4EnglishMaths_26)</td>
+                            <td>@Html.DisplayFor(Model => Model.EnglandPerformance.Grade4EnglishMaths_25)</td>
+                            <td>@Html.DisplayFor(Model => Model.EnglandPerformance.Grade4EnglishMaths_24)</td>
+                            <td>@Html.DisplayFor(Model => Model.EnglandPerformance.Grade4EnglishMaths_23)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+
+    </div>
+</section>
+
+<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
+<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet' />
+<script>
+    const map = L.map('map',{fullscreenControl: true}).setView([53.608253, -2.338538], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
+
+    const markersData = @Html.Raw(Model.LocationDataJson);
+    console.log(markersData);
+    // create markers and keep original data on each marker for reference
+    const markers = markersData.map(d => {
+        const m = L.marker([d.lat, d.lng], { title: d.title }).addTo(map).bindPopup(d.title);
+        m._meta = d;
+        return m;
+    });
+
+    const linesGroup = L.layerGroup().addTo(map);
+
+    // Group for range circles (created from markersData). Not added to map by default.
+    const rangesGroup = L.layerGroup();
+
+    // Create circle(s) for markers that include a range value in their data.
+    // Supported properties: furthestOffer, range, rangeMeters, maxRange (interpreted as diameter in meters).
+    markers.forEach(m => {
+        const d = m._meta || {};
+        const rangeVal = d.furthestOffer;
+
+        if (rangeVal != null && !isNaN(Number(rangeVal))) {            
+            const diameter = Number(rangeVal);
+            const circle = L.circle(m.getLatLng(), {
+                radius: formatDistanceReverse(d.furthestOffer),
+                color: '#28a745',
+                fillColor: '#28a745',
+                fillOpacity: 0.08,
+                interactive: false
+            });
+            // attach source marker reference for potential future use
+            circle._sourceMarker = m;
+            rangesGroup.addLayer(circle);            
+        }
+      
+    });
+
+    // Always display distances in miles (convert from meters)
+    function formatDistance(meters) {
+        const miles = meters * 0.000621371; // 1 meter = 0.000621371 miles
+        return miles.toFixed(2) + ' miles';
+    }
+     
+    function formatDistanceReverse(miles) {
+        const meters = (miles / 0.000621371); // 1 meter = 0.000621371 miles
+        return meters;
+    }
+
+    // Add a small control to toggle range circles on/off
+    const rangesControl = L.control({ position: 'topright' });
+    rangesControl.onAdd = function(map) {
+        const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+        container.style.padding = '6px';
+        container.style.background = 'white';
+        container.style.boxShadow = '0 1px 4px rgba(0,0,0,0.2)';
+        container.innerHTML = '<label style="display:flex;align-items:center;gap:6px;margin:0;white-space:nowrap;"><input id="toggleRanges" type="checkbox"> Show furthest offer in 2026</label>';
+        L.DomEvent.disableClickPropagation(container);
+        return container;
+    };
+    rangesControl.addTo(map);
+
+    // Toggle behavior — attach handler to the checkbox created in the control.
+    function attachRangesToggle() {
+        const cb = document.getElementById('toggleRanges');
+        if (!cb) return false;
+        cb.addEventListener('change', function(e) {
+            if (e.target.checked) {
+                rangesGroup.addTo(map);
+            } else {
+                if (map.hasLayer(rangesGroup)) map.removeLayer(rangesGroup);
+            }
+        });
+        // If there are any ranges available, enable and show them by default
+        try {
+            if (rangesGroup.getLayers().length > 0) {
+                cb.checked = true;
+                rangesGroup.addTo(map);
+            }
+        } catch (err) {
+            console.debug('rangesGroup not ready', err);
+        }
+        return true;
+    }
+
+    // Try to attach immediately; if the control hasn't been added to DOM yet, retry briefly.
+    if (!attachRangesToggle()) {
+        let retries = 0;
+        const retryInterval = setInterval(() => {
+            if (attachRangesToggle() || ++retries > 10) clearInterval(retryInterval);
+        }, 100);
+    }
+
+    map.on('click', function(e) {
+        linesGroup.clearLayers(); const click = e.latlng;
+        // compute distances
+        const results = markers.map(m => {
+            return { marker: m, distance: click.distanceTo(m.getLatLng()) };
+        }).sort((a, b) => a.distance - b.distance);
+
+        // draw lines and labels; highlight nearest
+        results.forEach((r, i) => {
+            const opts = { color: i === 0 ? '#d9534f' : '#007bff', weight: i === 0 ? 3 : 1, dashArray: '6,6' };
+            L.polyline([click, r.marker.getLatLng()], opts).addTo(linesGroup);
+        });
+
+        // popup with sorted list
+        const listHtml = results.map((r, idx) => {
+            const title = r.marker.options.title || ('Marker ' + (idx + 1));
+            return `${idx + 1}. ${title}: <b>${formatDistance(r.distance)}</b>`;
+        }).join('<br/>');
+
+        L.popup({ maxWidth: 300 })
+            .setLatLng(click)
+            .setContent('<strong>Distances to markers</strong><br/>' + listHtml)
+            .openOn(map);
+    });
+</script>

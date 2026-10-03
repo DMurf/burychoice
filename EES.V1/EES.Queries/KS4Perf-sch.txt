@@ -1,0 +1,73 @@
+POST /statistics/v1/data-sets/19e39901-a96c-be76-b9c2-6af54ae076d2/query HTTP/1.1
+Host: api.education.gov.uk
+Content-Type: application/json
+Accept: application/json
+Content-Length: 1536
+
+{
+    "indicators": [
+        "kgVhs",
+        "Pwoeb",
+        "hCRyW",
+        "dDo0Z",
+        "IL3Bz"
+    ],
+    "criteria": {
+        "and": [
+            {
+                "filters": {
+                    "eq": "5Kydi"
+                }
+            },
+            {
+                "filters": {
+                    "eq": "mws9K"
+                }
+            },
+            {
+                "filters": {
+                    "eq": "WCb2b"
+                }
+            },
+            {
+                "filters": {
+                    "eq": "9b64v"
+                }
+            },
+            {
+                "filters": {
+                    "eq": "TaYuP"
+                }
+            },
+            {
+                "locations": {
+                    "in": [
+                        {
+                            "level": "SCH",
+                            "urn": "146529"
+                        },
+                        {
+                            "level": "SCH",
+                            "urn": "105354"
+                        },
+                        {
+                            "level": "SCH",
+                            "urn": "148097"
+                        }
+                    ]
+                }
+            },
+            {
+                "timePeriods": {
+                    "gte": {
+                        "period": "2022/2023",
+                        "code": "AY"
+                    }
+                }
+            }
+        ]
+    },
+    "debug": false,
+    "page": 1,
+    "pageSize": 1000
+}

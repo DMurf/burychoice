@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Bury Choice</title>
+    <link rel="stylesheet" href="/css/bulma/css/bulma.min.css">
+    <link rel="stylesheet" href="/js/leaflet/dist/leaflet.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tomickigrzegorz/autocomplete@3.4.0/dist/css/autocomplete.min.css" />
+    <script src="/js/leaflet/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/tomickigrzegorz/autocomplete@3.4.0/dist/js/autocomplete.min.js"></script>
+</head>
+<body>
+    <section>
+        <!-- Hero content: will be in the middle -->
+        <div class="hero is-link">
+            <div class="hero-body">
+                <div class="container has-text-centered">
+                    <h1 class="title">
+                        Bury Choice 
+                    </h1>
+                    <h2 class="subtitle">
+                        (For Secondary Schools)
+                    </h2>
+                </div>
+            </div>
+            <!-- Hero footer: will stick at the bottom -->
+            <div class="hero-foot">
+                <nav class="tabs">
+                    <div class="container">
+                        <ul>
+                            <li class="is-active">
+                                <a>Overview</a>
+                            </li>
+                            <li>
+                                <a>Modifiers</a>
+                            </li>
+                            <li>
+                                <a>Grid</a>
+                            </li>
+                            <li>
+                                <a>Elements</a>
+                            </li>
+                            <li>
+                                <a>Components</a>
+                            </li>
+                            <li>
+                                <a>Layout</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </section>
+    @RenderBody()
+
+
+
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
