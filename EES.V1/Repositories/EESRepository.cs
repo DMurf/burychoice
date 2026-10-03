@@ -5,15 +5,20 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
+using System.IO;
 
 namespace EES.V1.Repositories
 {
     public class EESRepository
     {
         private RestClient _client;
+        private readonly string _datasetFolder;
         public EESRepository()
         {
             _client = new RestClient("https://api.education.gov.uk/statistics/v1"); // Replace with actual base URL
+            // Use application base directory so paths work on a server instead of a developer machine
+            _datasetFolder = Path.Combine(AppContext.BaseDirectory, "EES.V1", "DatasetDownload");
+            Directory.CreateDirectory(_datasetFolder);
         }
         public async void GetMetadataDownload(Guid dataSetId)
         {
@@ -24,14 +29,16 @@ namespace EES.V1.Repositories
             if (response.IsSuccessful)
             {
                 var content = response.Content;
-                File.WriteAllText($"C:\\Development\\BuryChoice\\EES.V1\\DatasetDownload\\{dataSetId}.json", JsonConvert.SerializeObject(JsonConvert.DeserializeObject(content), Formatting.Indented));
+                var metaPath = Path.Combine(_datasetFolder, $"{dataSetId}.json");
+                File.WriteAllText(metaPath, JsonConvert.SerializeObject(JsonConvert.DeserializeObject(content), Formatting.Indented));
 
 
                 var getFiltersFromJson = JsonConvert.DeserializeObject<DatasetDownloadDto>(content);
 
                 var a = getFiltersFromJson.Locations.Where(x => x.Level.Code == "SCH").First().Options;
 
-                File.WriteAllText($"C:\\Development\\BuryChoice\\EES.V1\\DatasetDownload\\{dataSetId}-urns.json", JsonConvert.SerializeObject(a, Formatting.Indented));
+                var urnsPath = Path.Combine(_datasetFolder, $"{dataSetId}-urns.json");
+                File.WriteAllText(urnsPath, JsonConvert.SerializeObject(a, Formatting.Indented));
 
             }
             else
@@ -42,13 +49,15 @@ namespace EES.V1.Repositories
 
         public string GetIdFromLookup(Guid dataSetId, string urn)
         {
-            var lookup = JsonConvert.DeserializeObject<List<LocationOption>>(File.ReadAllText($"C:\\Development\\BuryChoice\\EES.V1\\DatasetDownload\\{dataSetId}-urns.json"));
+            var lookupPath = Path.Combine(_datasetFolder, $"{dataSetId}-urns.json");
+            var lookup = JsonConvert.DeserializeObject<List<LocationOption>>(File.ReadAllText(lookupPath));
             return lookup.Where(x => x.Urn == urn).FirstOrDefault()?.Id;
         }
 
         public string GetUrnFromLookup(Guid dataSetId, string id)
         {
-            var lookup = JsonConvert.DeserializeObject<List<LocationOption>>(File.ReadAllText($"C:\\Development\\BuryChoice\\EES.V1\\DatasetDownload\\{dataSetId}-urns.json"));
+            var lookupPath = Path.Combine(_datasetFolder, $"{dataSetId}-urns.json");
+            var lookup = JsonConvert.DeserializeObject<List<LocationOption>>(File.ReadAllText(lookupPath));
             return lookup.Where(x => x.Id == id).FirstOrDefault()?.Urn;
         }
 

@@ -5,6 +5,7 @@ using EES.V1.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using System.IO;
 
 namespace BuryChoice.Controllers
 {
@@ -37,7 +38,8 @@ namespace BuryChoice.Controllers
             var model = new MainViewModel(schools);
             model.OfferDetails = OfferDetailsSummary.Map(offerDetails, schoolDict: schools.ToDictionary(s => s.URN, s => s.EstablishmentName));
 
-            var dicto = JsonConvert.DeserializeObject<DatasetDownloadDto>(System.IO.File.ReadAllText("C:\\Development\\BuryChoice\\EES.V1\\DatasetDownload\\19e39901-a96c-be76-b9c2-6af54ae076d2.json"));
+            var datasetPath = Path.Combine(AppContext.BaseDirectory, "EES.V1", "DatasetDownload", "19e39901-a96c-be76-b9c2-6af54ae076d2.json");
+            var dicto = JsonConvert.DeserializeObject<DatasetDownloadDto>(System.IO.File.ReadAllText(datasetPath));
 
             var ees = new EESRepository();
             var transformer = new TransformPerformance();
