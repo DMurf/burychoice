@@ -7,7 +7,7 @@ namespace BuryChoice.Services
 {
     public class TransformPerformance
     {
-        public List<PerformanceTablesModel> Map(EESResponse ees)
+        public List<PerformanceTablesModel> Map(EESResponse ees, List<LocationOption> lookupOptions)
         {
             var eesRep = new EESRepository();
             var returnList = new List<PerformanceTablesModel>();
@@ -17,7 +17,7 @@ namespace BuryChoice.Services
             {
                 var thisItem = new PerformanceTablesModel();
 
-                var urn = eesRep.GetUrnFromLookup(Guid.Parse("19e39901-a96c-be76-b9c2-6af54ae076d2"), schoolId);
+                var urn = eesRep.GetUrnFromLookup(Guid.Parse("19e39901-a96c-be76-b9c2-6af54ae076d2"), schoolId, lookupOptions);
                 
 
                 thisItem.SchoolId = urn;

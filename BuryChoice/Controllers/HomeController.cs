@@ -38,14 +38,14 @@ namespace BuryChoice.Controllers
             var model = new MainViewModel(schools);
             model.OfferDetails = OfferDetailsSummary.Map(offerDetails, schoolDict: schools.ToDictionary(s => s.URN, s => s.EstablishmentName));
 
-            var datasetPath = Path.Combine(AppContext.BaseDirectory, "data", "19e39901-a96c-be76-b9c2-6af54ae076d2.json");
-            var dicto = JsonConvert.DeserializeObject<DatasetDownloadDto>(System.IO.File.ReadAllText(datasetPath));
+            var dicto = await _jsonReader.ReadJsonFileAsync<DatasetDownloadDto>("data/19e39901-a96c-be76-b9c2-6af54ae076d2.json", fromWebRoot: true) ?? new DatasetDownloadDto();
+            var locationOpts = await _jsonReader.ReadJsonFileAsync<List<LocationOption>>("data/19e39901-a96c-be76-b9c2-6af54ae076d2-urns.json", fromWebRoot: true) ?? new List<LocationOption>();
 
             var ees = new EESRepository();
             var transformer = new TransformPerformance();
             var result = await ees.GetKS4PerformanceData_Estab();
             var laNat = await ees.GetKS4PerformanceData_LANAT();
-            var transformedResults = transformer.Map(result);
+            var transformedResults = transformer.Map(result, locationOpts);
             foreach(var school in model.Schools)
             {
                 school.PerformanceTables = transformedResults.Where(x => x.SchoolId == school.URN.ToString()).FirstOrDefault();

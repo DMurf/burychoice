@@ -90,16 +90,16 @@
                     }
                     <tr>
                         <th>Number of Year 6 students in Bury</th>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>2,329</td>
+                        <td>2,382</td>
+                        <td>2,396</td>
 
                     </tr>
-                     <tr>
+                    <tr>
                         <th>Number of Year 5 students in Bury</th>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>2,354</td>
+                        <td>2,315</td>
+                        <td>2,362</td>
 
                     </tr>
                 </tbody>
@@ -126,7 +126,7 @@
                     {
                         <tr>
                             <th> @item.Name </th>
-                            <td> 
+                            <td>
                                 @if (item.Distance26.HasValue)
                                 {
                                     <text>@item.Distance26?.ToString("0.##") miles</text>
@@ -136,7 +136,7 @@
                                     <text>N/A</text>
                                 }
                             </td>
-                            <td> 
+                            <td>
                                 @if (item.Distance25.HasValue)
                                 {
                                     <text>@item.Distance25?.ToString("0.##") miles</text>
@@ -146,7 +146,7 @@
                                     <text>N/A</text>
                                 }
                             </td>
-                            <td> 
+                            <td>
                                 @if (item.Distance24.HasValue)
                                 {
                                     <text>@item.Distance24?.ToString("0.##") miles</text>
@@ -160,6 +160,12 @@
                     }
                 </tbody>
             </table>
+
+            <div>Sources - <a href="https://explore-education-statistics.service.gov.uk/data-tables/permalink/6db920f9-5366-4714-8ba1-08df25240285"> (EES) Pupils /year in Bury</a> |
+                <a href="https://www.bury.gov.uk/asset-library/historical-community-secondary-schools-allocation-information2.pdf">Bury Council - Historic Allocations</a>
+
+                
+            </div>
         </div>
     </div>
 </section>
@@ -220,7 +226,7 @@
                             </th>
                         </tr>
                     </thead>
-                   
+
                     <tbody>
                         @foreach (var item in Model.Schools)
                         {
@@ -388,6 +394,12 @@
                         </tr>
                     </tbody>
                 </table>
+
+                <div>
+                    Sources - <a href="https://explore-education-statistics.service.gov.uk/data-tables/permalink/f1bd8a78-bd72-471b-4ac9-08df251b5373">EES - KS4 Performance - Schools</a> |
+                    <a href="https://explore-education-statistics.service.gov.uk/data-tables/permalink/9dd301d8-cdf8-4b58-8ba2-08df25240285">EES - KS4 Performance - LA/NAT</a>
+
+                </div>
             </section>
         </div>
 
@@ -397,7 +409,7 @@
 <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
 <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet' />
 <script>
-    const map = L.map('map',{fullscreenControl: true}).setView([53.608253, -2.338538], 13);
+    const map = L.map('map', { fullscreenControl: true }).setView([53.608253, -2.338538], 13);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
 
     const markersData = @Html.Raw(Model.LocationDataJson);
@@ -420,7 +432,7 @@
         const d = m._meta || {};
         const rangeVal = d.furthestOffer;
 
-        if (rangeVal != null && !isNaN(Number(rangeVal))) {            
+        if (rangeVal != null && !isNaN(Number(rangeVal))) {
             const diameter = Number(rangeVal);
             const circle = L.circle(m.getLatLng(), {
                 radius: formatDistanceReverse(d.furthestOffer),
@@ -431,9 +443,9 @@
             });
             // attach source marker reference for potential future use
             circle._sourceMarker = m;
-            rangesGroup.addLayer(circle);            
+            rangesGroup.addLayer(circle);
         }
-      
+
     });
 
     // Always display distances in miles (convert from meters)
@@ -441,7 +453,7 @@
         const miles = meters * 0.000621371; // 1 meter = 0.000621371 miles
         return miles.toFixed(2) + ' miles';
     }
-     
+
     function formatDistanceReverse(miles) {
         const meters = (miles / 0.000621371); // 1 meter = 0.000621371 miles
         return meters;

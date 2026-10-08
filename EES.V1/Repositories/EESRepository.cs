@@ -1,11 +1,12 @@
 ﻿using EES.V1.Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Bson;
 using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Text;
 using System.IO;
+using System.Text;
 
 namespace EES.V1.Repositories
 {
@@ -47,17 +48,19 @@ namespace EES.V1.Repositories
             }
         }
 
-        public string GetIdFromLookup(Guid dataSetId, string urn)
+        public string GetIdFromLookup(Guid dataSetId, string urn, List<LocationOption> lookup)
         {
-            var lookupPath = Path.Combine(_datasetFolder, $"{dataSetId}-urns.json");
-            var lookup = JsonConvert.DeserializeObject<List<LocationOption>>(File.ReadAllText(lookupPath));
+            //var lookupPath = Path.Combine(_datasetFolder, $"{dataSetId}-urns.json");
+            //var lookup = JsonConvert.DeserializeObject<List<LocationOption>>(File.ReadAllText(lookupPath));
             return lookup.Where(x => x.Urn == urn).FirstOrDefault()?.Id;
         }
 
-        public string GetUrnFromLookup(Guid dataSetId, string id)
+        public string GetUrnFromLookup(Guid dataSetId, string id, List<LocationOption> lookup)
         {
-            var lookupPath = Path.Combine(_datasetFolder, $"{dataSetId}-urns.json");
-            var lookup = JsonConvert.DeserializeObject<List<LocationOption>>(File.ReadAllText(lookupPath));
+            //var lookup = await _jsonReader.ReadJsonFileAsync<List<LocationOption>>($"data/{dataSetId}-urns.json", fromWebRoot: true) ?? new List<LocationOption>();
+
+            //var lookupPath = Path.Combine(_datasetFolder, $"{dataSetId}-urns.json");
+            //var lookup = JsonConvert.DeserializeObject<List<LocationOption>>(File.ReadAllText(lookupPath));
             return lookup.Where(x => x.Id == id).FirstOrDefault()?.Urn;
         }
 
