@@ -7,12 +7,18 @@ namespace BuryChoice.Services
 {
     public class TransformPerformance
     {
-        public List<PerformanceTablesModel> Map(EESResponse ees, List<LocationOption> lookupOptions)
+        public List<PerformanceTablesModel> Map(EESResponse ees, List<LocationOption> lookupOptions, DatasetDownloadDto lookup)
         {
             var eesRep = new EESRepository();
             var returnList = new List<PerformanceTablesModel>();
 
-            var schoolIds = ees.results.Select(x => x.locations.SCH).Distinct().ToList();
+            var resultTransformed = new List<Result>();
+            foreach(var e in ees.results)
+            {
+                resultTransformed.Add(e);
+            }
+
+            var schoolIds = resultTransformed.Select(x => x.locations.SCH).Distinct().ToList();
             foreach(var schoolId in schoolIds)
             {
                 var thisItem = new PerformanceTablesModel();
@@ -22,7 +28,7 @@ namespace BuryChoice.Services
 
                 thisItem.SchoolId = urn;
 
-                var schoolResults = ees.results.Where(x => x.locations.SCH == schoolId).ToList();
+                var schoolResults = resultTransformed.Where(x => x.locations.SCH == schoolId).ToList();
                 foreach(var result in schoolResults)
                 {
                     if (result.timePeriod.period == "2024/2025")
@@ -54,19 +60,25 @@ namespace BuryChoice.Services
             
         }
 
-        public List<PerformanceTablesModel> Map_Geo_LA(EESResponse ees)
+        public List<PerformanceTablesModel> Map_Geo_LA(EESResponse ees, DatasetDownloadDto lookup)
         {
             var eesRep = new EESRepository();
             var returnList = new List<PerformanceTablesModel>();
 
-            var schoolIds = ees.results.Select(x => x.geographicLevel == "LA").Distinct().ToList();
+            var resultTransformed = new List<Result>();
+            foreach (var e in ees.results)
+            {
+                resultTransformed.Add(e);
+            }
+
+            var schoolIds = resultTransformed.Select(x => x.geographicLevel == "LA").Distinct().ToList();
             foreach (var schoolId in schoolIds)
             {
                 var thisItem = new PerformanceTablesModel();
 
                 thisItem.SchoolId = "";
 
-                var schoolResults = ees.results.Where(x => x.locations.LA == "p5PSo").ToList();
+                var schoolResults = resultTransformed.Where(x => x.locations.LA == "p5PSo").ToList();
                 foreach (var result in schoolResults)
                 {
                     if (result.timePeriod.period == "2024/2025")
@@ -98,19 +110,25 @@ namespace BuryChoice.Services
 
         }
 
-        public List<PerformanceTablesModel> Map_Geo_NAT(EESResponse ees)
+        public List<PerformanceTablesModel> Map_Geo_NAT(EESResponse ees, DatasetDownloadDto lookup)
         {
             var eesRep = new EESRepository();
             var returnList = new List<PerformanceTablesModel>();
 
-            var schoolIds = ees.results.Select(x => x.geographicLevel == "NAT").Distinct().ToList();
+            var resultTransformed = new List<Result>();
+            foreach (var e in ees.results)
+            {
+                resultTransformed.Add(e);
+            }
+
+            var schoolIds = resultTransformed.Select(x => x.geographicLevel == "NAT").Distinct().ToList();
             foreach (var schoolId in schoolIds)
             {
                 var thisItem = new PerformanceTablesModel();
 
                 thisItem.SchoolId = "";
 
-                var schoolResults = ees.results.Where(x => x.geographicLevel == "NAT").Where(x => x.locations.NAT == "dP0Zw").ToList();
+                var schoolResults = resultTransformed.Where(x => x.geographicLevel == "NAT").Where(x => x.locations.NAT == "dP0Zw").ToList();
                 foreach (var result in schoolResults)
                 {
                     if (result.timePeriod.period == "2024/2025")
@@ -145,7 +163,7 @@ namespace BuryChoice.Services
         private double? CanParseWithResult(Result results, string key)
         {
 
-            if (double.TryParse(results.Values.Where(x => x.Key == key).FirstOrDefault().Value, out double result)){
+            if (double.TryParse(results._values?.Where(x => x.Key == key).FirstOrDefault().Value, out double result)){
                 return result;
             }
             return null;

@@ -53,11 +53,19 @@ namespace EES.V1.Models.EESResponse
         [JsonPropertyName("filters")]
         public Dictionary<string, string>? _filters { get; set; }
 
-        public List<ReferencedFilter> Filters => _filters?.Select(f => new ReferencedFilter(f.Key, f.Value, "filter")).ToList() ?? new List<ReferencedFilter>();
+        public List<ReferencedFilter> Filters = new List<ReferencedFilter>();
 
         [JsonPropertyName("values")]
         public Dictionary<string, string>? _values { get; set; }
-        public List<ReferencedValues> Values => _values?.Select(v => new ReferencedValues(v.Key, v.Value, "values")).ToList() ?? new List<ReferencedValues>();
+        public List<ReferencedValues> Values = new List<ReferencedValues>();
+
+        public static Result Map(Result unMapped, DatasetDownloadDto lookup)
+        {
+            var returnResult = unMapped;
+            returnResult.Filters = unMapped._filters?.Select(f => new ReferencedFilter(f.Key, f.Value, "filter", lookup)).ToList() ?? new List<ReferencedFilter>();
+            returnResult.Values = unMapped._values?.Select(v => new ReferencedValues(v.Key, v.Value, "values", lookup)).ToList() ?? new List<ReferencedValues>();
+            return returnResult;
+        }
     }
 
 
@@ -87,14 +95,20 @@ namespace EES.V1.Models.EESResponse
         public string Value { get; set; }
         public string KeyMatched { get; set; }
         public string ValueMatched { get; set; }
-        public ReferencedFilter(string key, string value, string type)
+        public ReferencedFilter(string key, string value, string type, DatasetDownloadDto referenceFile)
         {
-            var referenceFile = JsonConvert.DeserializeObject<DatasetDownloadDto>(File.ReadAllText(@"C:\Development\BuryChoice\EES.V1\DatasetDownload\19e39901-a96c-be76-b9c2-6af54ae076d2.json"));
             Key = key;
             Value = value;
 
-            KeyMatched = referenceFile.Filters.Where(x => x.Id == key).First()?.Label;
-            ValueMatched = referenceFile.Filters.Where(x => x.Id == key).First()?.Options.Where(x => x.Id == value).First()?.Label;
+            try
+            {
+                KeyMatched = referenceFile.Filters.Where(x => x.Id == key).FirstOrDefault()?.Label;
+                ValueMatched = referenceFile.Filters.Where(x => x.Id == key).First()?.Options.Where(x => x.Id == value).FirstOrDefault()?.Label;
+            }
+            catch (Exception e)
+            {
+
+            }
         }
     }
 
@@ -103,15 +117,20 @@ namespace EES.V1.Models.EESResponse
         public string Key { get; set; }
         public string Value { get; set; }
         public string KeyMatched { get; set; }
-        public ReferencedValues(string key, string value, string type)
+        public ReferencedValues(string key, string value, string type, DatasetDownloadDto referenceFile)
         {
-            var referenceFile = JsonConvert.DeserializeObject<DatasetDownloadDto>(File.ReadAllText(@"C:\Development\BuryChoice\EES.V1\DatasetDownload\19e39901-a96c-be76-b9c2-6af54ae076d2.json"));
             Key = key;
             Value = value;
+            try
+            {
+                var matchedAttempt = referenceFile.Indicators.Where(x => x.Id == key).FirstOrDefault();
 
-            var matchedAttempt = referenceFile.Indicators.Where(x => x.Id == key).FirstOrDefault();
+                KeyMatched = matchedAttempt != null ? matchedAttempt.Label : string.Empty;
+            }
+            catch ( Exception e)
+            {
 
-            KeyMatched = matchedAttempt != null ? matchedAttempt.Label : string.Empty;
+            }
         }
     }
 }

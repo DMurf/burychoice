@@ -44,15 +44,16 @@ namespace BuryChoice.Controllers
             var ees = new EESRepository();
             var transformer = new TransformPerformance();
             var result = await ees.GetKS4PerformanceData_Estab();
+
             var laNat = await ees.GetKS4PerformanceData_LANAT();
-            var transformedResults = transformer.Map(result, locationOpts);
+            var transformedResults = transformer.Map(result, locationOpts, dicto);
             foreach(var school in model.Schools)
             {
                 school.PerformanceTables = transformedResults.Where(x => x.SchoolId == school.URN.ToString()).FirstOrDefault();
             }
 
-            model.BuryPerformance = transformer.Map_Geo_LA(laNat).First();
-            model.EnglandPerformance = transformer.Map_Geo_NAT(laNat).First();
+            model.BuryPerformance = transformer.Map_Geo_LA(laNat, dicto).First();
+            model.EnglandPerformance = transformer.Map_Geo_NAT(laNat, dicto).First();
 
 
             return View(model);
